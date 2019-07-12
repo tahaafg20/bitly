@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <title>My URL Shortner | Welcome</title>
+
+  <!-- Bootstrap core CSS -->
+  <link href="/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- Custom fonts for this template -->
+  <link href="/vendor/fontawesome-free/css/all.min.css" rel="stylesheet">
+  <link href="/vendor/simple-line-icons/css/simple-line-icons.css" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Lato:300,400,700,300italic,400italic,700italic" rel="stylesheet" type="text/css">
+
+  <!-- Custom styles for this template -->
+  <link href="/css/landing-page.min.css" rel="stylesheet">
+  <style>
+  ul {
+  list-style-type: none;
+}
+
+/* li {
+  float: left;
+}
+li a {
+  display: block;
+  color: white;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+} */
+
+
+/* Change the link color to #111 (black) on hover */
+li a:hover {
+  text-decoration:none;
+  color: white;
+}
+  </style>
+</head>
+
+<body>
+ <%@current_user = User.find(session[:user_id])%>
+  <%@current_links = @current_user.urls.last(5)%>
+<div class="pos-f-t">
+  <div class="collapse" id="navbarToggleExternalContent">
+    <div class="bg-dark p-4">
+      <ul>
+  <li><a href="/users/homepage">Home</a></li>
+  <li><a href="#shortener">Shorten the Url</a></li>
+  <li><a href="#track">Your URLs Tracking</a></li>
+  <li><a href="#con">Contact</a></li>
+  <form id="myform" method="post" action="/sessions/logout">
+  <input type="hidden" name="name" value="value" /> 
+  <a style="color:#0061af;"onclick="document.getElementById('myform').submit();">Sign Out</a>
+</form>
+  <%# <form action="/sessions/logout" method="POST"><li><a href="/user/logout">/sessions/logout</a></li></form>
+</ul> &nbsp; %>
+
+      <span class="text-muted"> In case you notice a bug I would be happy to fix it.( ig: taha_20)</span>
+    </div>
+  </div>
+  <nav class="navbar navbar-dark bg-dark">
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggleExternalContent" aria-controls="navbarToggleExternalContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+  </nav>
+</div>
+  <!-- Masthead -->
+  <header class="masthead text-white text-center">
+    <div class="overlay"></div>
+    <div class="container">
+      <div class="row">
+        <div class="col-xl-9 mx-auto">
+          <h1 class="mb-5" id="shortener">Shorten Your Link With Us</h1>
+        </div>
+        <div class="col-md-10 col-lg-8 col-xl-7 mx-auto">
+          <form action="/get_url" method="POST">
+            <div class="form-row">
+              <div class="col-12 col-md-9 mb-2 mb-md-0">
+                <input type="string" name="link" class="form-control form-control-lg" placeholder="Enter your url...">
+              </div>
+              <div class="col-12 col-md-3">
+                <button type="submit" class="btn btn-block btn-lg btn-primary">Shorten The Link!</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Icons Grid -->
+  <br><br>
+  <h3 style="margin-left:auto;margin-right:auto;"> &nbsp;&nbsp; WELCOME, <%=@current_user.name%></h3>
+  <section class="features-icons bg-light text-center">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-4">
+          <div class="features-icons-item mx-auto mb-5 mb-lg-0 mb-lg-3">
+            <div id="track" class="features-icons-icon d-flex" >
+              <i class="icon-screen-desktop m-auto text-primary"></i>
+            </div>
+            <h3>Your Most Recent Shortened URLs</h3><br>
+            <%@total_clicks = Array.new%>
+            <%@current_user.urls.each do |link_object|%>
+            <%@total_clicks << link_object.counter%>
+            <%end%>
+            <%@current_links.each do |link|%>
+            <p class="lead mb-0"><a target="_blank" href="/<%=link.generated_link%>">http://localhost:9393/<%=link.generated_link%></a></p>
+            <%end%><br>
+          </div>
+        </div>
+        <div class="col-lg-4">
+          <div class="features-icons-item mx-auto mb-5 mb-lg-0 mb-lg-3">
+            <div class="features-icons-icon d-flex">
+              <i class="icon-layers m-auto text-primary"></i>
+            </div>
+            <h3>Profile</h3>
+            <p class="lead mb-0">Name: <%=@current_user.name%></p>
+            <p class="lead mb-0">Email: <%=@current_user.email%></p>
+            <p class="lead mb-0">Total Clicks On All Your Links Are: (<%=@total_clicks.sum%>)</p>
+            <p class="lead mb-0">You Joined Us On : (<%=@current_user.created_at%>)</p><br>
+          </div>
+        </div>
+        <div class="col-lg-4">
+          <div class="features-icons-item mx-auto mb-0 mb-lg-3">
+            <div class="features-icons-icon d-flex">
+              <i class="icon-check m-auto text-primary"></i>
+            </div>
+            <h3>Click Counter For Your Most Recent URLs</h3>
+            <%@current_links.each do |link|%>
+            <p class="lead mb-0">http://localhost:9393/<%=link.generated_link%> (<%=link.counter%>)</p>
+            <%end%><br>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  
+  <!-- Call to Action -->
+  <section class="call-to-action text-white text-center">
+    <div class="overlay"></div>
+    <div class="container">
+      <div class="row">
+        <div class="col-xl-9 mx-auto">
+          <h2 class="mb-4">Enjoy Using My Free URL Shortener</h2>
+        </div>
+        <div class="col-md-10 col-lg-8 col-xl-7 mx-auto">
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer bg-light">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-6 h-100 text-center text-lg-left my-auto">
+          <ul class="list-inline mb-2">
+            <li class="list-inline-item">
+              <a href="#">About</a>
+            </li>
+            <li class="list-inline-item">&sdot;</li>
+            <li class="list-inline-item">
+              <div id="con"><a href="#">Contact</a></div>
+            </li>
+            <li class="list-inline-item">&sdot;</li>
+            <li class="list-inline-item">
+              <a href="#">Terms of Use</a>
+            </li>
+            <li class="list-inline-item">&sdot;</li>
+            <li class="list-inline-item">
+              <a href="#">Privacy Policy</a>
+            </li>
+          </ul>
+          <p class="text-muted small mb-4 mb-lg-0">&copy; My URL Shortner 2019. All Rights Reserved.</p>
+        </div>
+        <div class="col-lg-6 h-100 text-center text-lg-right my-auto">
+          <ul class="list-inline mb-0">
+            <li class="list-inline-item mr-3">
+              <a href="#">
+                <i class="fab fa-facebook fa-2x fa-fw"></i>
+              </a>
+            </li>
+            <li class="list-inline-item mr-3">
+              <a href="#">
+                <i class="fab fa-twitter-square fa-2x fa-fw"></i>
+              </a>
+            </li>
+            <li class="list-inline-item">
+              <a href="#">
+                <i class="fab fa-instagram fa-2x fa-fw"></i>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Bootstrap core JavaScript -->
+  <script src="/vendor/jquery/jquery.min.js"></script>
+  <script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+</body>
+
+</html>
+
+
+

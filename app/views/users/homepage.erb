@@ -113,7 +113,7 @@ li a:hover {
             <%@total_clicks << link_object.counter%>
             <%end%>
             <%@current_links.each do |link|%>
-            <p class="lead mb-0"><a target="_blank" href="/<%=link.generated_link%>">http://localhost:9393/<%=link.generated_link%></a></p>
+            <p class="lead mb-0"><a target="_blank" href="/<%=link.generated_link%>"><%=ENV['BASE_URL']%><%=link.generated_link%></a></p>
             <%end%><br>
           </div>
         </div>
@@ -136,7 +136,7 @@ li a:hover {
             </div>
             <h3>Click Counter For Your Most Recent URLs</h3>
             <%@current_links.each do |link|%>
-            <p class="lead mb-0">http://localhost:9393/<%=link.generated_link%> (<%=link.counter%>)</p>
+            <p class="lead mb-0"><%=ENV['BASE_URL']%><%=link.generated_link%> (<%=link.counter%>)</p>
             <%end%><br>
           </div>
         </div>

@@ -1,6 +1,7 @@
 # A sample Gemfile
 source "https://rubygems.org"
 
+ruby '2.6.3'
 gem 'sinatra'
 gem 'activerecord'
 gem 'sinatra-activerecord'
@@ -11,6 +12,7 @@ gem 'shotgun'
 gem 'byebug'
 gem 'bcrypt'
 gem 'validate_url'
+
 
 group :test do
   gem 'launchy'

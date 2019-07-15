@@ -1,8 +1,9 @@
 require 'bundler/setup'
-require 'dotenv'
 Bundler.require
-unless ENV['RACK_ENV'] == "development"
 ENV['SINATRA_ENV'] ||= "development"
+
+unless ENV['RACK_ENV'] == "production"
+    require 'dotenv'
 Dotenv.load
 end
 
